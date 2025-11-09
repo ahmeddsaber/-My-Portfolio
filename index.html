@@ -26,7 +26,9 @@
   <!-- Main CSS File -->
     <!-- Main CSS File -->
   <link href="index.css" rel="stylesheet">
-  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" rel="stylesheet">
+
   <!-- EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
@@ -34,7 +36,9 @@
       emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
     })();
   </script>
-</head>
+
+  <!-- GSAP (for smooth carousel animation) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <link href="temp.css" rel="stylesheet">
   
   <!-- Vendor JS Files -->
@@ -240,13 +244,23 @@
                 </div>
               </div>
 
-              <div class="skills-showcase" data-aos="fade-up" data-aos-delay="250">
+          
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> <!-- end About-->
+    <!-- Start Skills -->
+     <section>
+            <div class="skills-showcase" data-aos="fade-up" data-aos-delay="250">
                 <div class="section-tag">Technical Arsenal</div>
                 <h3>Core Technologies & Expertise</h3>
 
-                <div class="skills-list">
+                <div class="skills-carousel">
+                  <div class="skills-track">
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-csharp-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">C# & .NET Core</span>
                       <span class="skill-percent">95%</span>
                     </div>
@@ -257,6 +271,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-dotnetcore-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">ASP.NET MVC & Web API</span>
                       <span class="skill-percent">93%</span>
                     </div>
@@ -267,6 +282,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="fas fa-plug skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">RESTful API Development</span>
                       <span class="skill-percent">92%</span>
                     </div>
@@ -277,6 +293,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-git-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">Git & GitHub</span>
                       <span class="skill-percent">90%</span>
                     </div>
@@ -287,6 +304,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="fas fa-sync-alt skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">Agile & Scrum</span>
                       <span class="skill-percent">88%</span>
                     </div>
@@ -297,6 +315,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="fab fa-postman skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">Postman & API Testing</span>
                       <span class="skill-percent">90%</span>
                     </div>
@@ -307,6 +326,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="fas fa-database skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">Entity Framework & LINQ</span>
                       <span class="skill-percent">92%</span>
                     </div>
@@ -317,6 +337,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-microsoftsqlserver-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">SQL Server & T-SQL</span>
                       <span class="skill-percent">90%</span>
                     </div>
@@ -327,6 +348,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-angularjs-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">Angular & TypeScript</span>
                       <span class="skill-percent">88%</span>
                     </div>
@@ -337,6 +359,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-javascript-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">JavaScript & ES6+</span>
                       <span class="skill-percent">87%</span>
                     </div>
@@ -347,6 +370,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="devicon-html5-plain colored skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">HTML5 & CSS3</span>
                       <span class="skill-percent">95%</span>
                     </div>
@@ -357,6 +381,7 @@
 
                   <div class="skill-item">
                     <div class="skill-info">
+                      <i class="fab fa-bootstrap skill-icon" aria-hidden="true"></i>
                       <span class="skill-name">Bootstrap & Responsive Design</span>
                       <span class="skill-percent">90%</span>
                     </div>
@@ -364,13 +389,11 @@
                       <div class="progress-bar" data-progress="90"></div>
                     </div>
                   </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+     </section>
+     <!-- end Skills-->
 
     <!-- Resume Section -->
     <section id="resume" class="resume section">
@@ -718,7 +741,7 @@
                 <div class="project-overlay">
                   <div class="project-links">
                     <a href="#" class="btn-view"><i class="bi bi-eye"></i></a>
-                    <a href="#" class="btn-code"><i class="bi bi-github"></i></a>
+                    <a href="https://github.com/ahmeddsaber/-My-Portfolio" class="btn-code"><i class="bi bi-github"></i></a>
                   </div>
                 </div>
                 <div class="project-badge">Full Stack</div>

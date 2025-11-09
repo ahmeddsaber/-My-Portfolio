@@ -249,6 +249,134 @@
   }
 
   // ========================================
+  // Skills Carousel (windowed loop with GSAP)
+  // Shows 6 items at a time and every 1s shifts items by removing last and adding next at start
+  // ========================================
+  const skillsTrack = document.querySelector('.skills-track'); // data source (kept in DOM)
+  let skillsWindow = null;
+  let loopInterval = null;
+  let skillsTween = null;
+
+  function buildSkillsData() {
+    if (!skillsTrack) return [];
+    const items = Array.from(skillsTrack.querySelectorAll('.skill-item'));
+    return items.map(item => {
+      const iconEl = item.querySelector('.skill-icon');
+      const nameEl = item.querySelector('.skill-name');
+      return {
+        iconHTML: iconEl ? iconEl.outerHTML : '',
+        name: nameEl ? nameEl.textContent.trim() : ''
+      };
+    });
+  }
+
+  function createSkillNode(data) {
+    const el = document.createElement('div');
+    el.className = 'skill-item';
+    el.innerHTML = `
+      <div class="skill-info">
+        ${data.iconHTML}
+        <span class="skill-name">${data.name}</span>
+      </div>`;
+    return el;
+  }
+
+  function initSkillsLoop() {
+    if (!skillsTrack || typeof gsap === 'undefined') return;
+
+    // cleanup previous
+    if (skillsWindow) {
+      if (skillsWindow.parentNode) skillsWindow.parentNode.removeChild(skillsWindow);
+      skillsWindow = null;
+    }
+    if (skillsTween) {
+      skillsTween.kill();
+      skillsTween = null;
+    }
+
+    const data = buildSkillsData();
+    if (!data.length) return;
+
+    // create visible window container (flex row)
+    skillsWindow = document.createElement('div');
+    skillsWindow.className = 'skills-window';
+
+    // insert the window before the hidden track
+    skillsTrack.parentNode.insertBefore(skillsWindow, skillsTrack);
+
+    // render items (original sequence)
+    const itemNodes = data.map(d => createSkillNode(d));
+    itemNodes.forEach(n => skillsWindow.appendChild(n));
+
+    // duplicate nodes to allow seamless scroll
+    const cloneNodes = itemNodes.map(n => n.cloneNode(true));
+    cloneNodes.forEach(n => skillsWindow.appendChild(n));
+
+    // determine visible container width (where 6 items must fit)
+    const visibleContainer = skillsTrack.parentNode; // .skills-carousel
+    const visibleWidth = visibleContainer ? visibleContainer.clientWidth : window.innerWidth;
+
+    // set each item's width so exactly 6 fit the visible container
+    const allChildren = Array.from(skillsWindow.children);
+    const itemWidth = Math.floor(visibleWidth / 6);
+    allChildren.forEach(ch => {
+      ch.style.width = itemWidth + 'px';
+      ch.style.flex = '0 0 ' + itemWidth + 'px';
+      ch.style.maxWidth = itemWidth + 'px';
+    });
+
+    // measure width of the original set (including gaps)
+    const originalCount = itemNodes.length;
+    let totalWidth = 0;
+    const calcWidths = () => {
+      const firstSet = Array.from(skillsWindow.children).slice(0, originalCount);
+      const gap = parseFloat(getComputedStyle(skillsWindow).gap) || 18;
+      const widths = firstSet.reduce((acc, el) => acc + el.offsetWidth, 0);
+      totalWidth = widths + gap * Math.max(0, firstSet.length - 1);
+      return totalWidth;
+    };
+
+    if (calcWidths() === 0) {
+      setTimeout(() => { if (calcWidths() !== 0) startMarquee(totalWidth); }, 120);
+    } else {
+      startMarquee(totalWidth);
+    }
+
+    function startMarquee(originalWidth) {
+      // ensure container width encompasses both sets
+      skillsWindow.style.width = (originalWidth * 2) + 'px';
+
+      // set speed/duration: target ~12s per originalWidth
+      const duration = 12; // seconds per loop (user preference 10-15)
+
+      // create animation: move left by originalWidth, repeat infinitely, pause 7s between loops
+      skillsTween = gsap.to(skillsWindow, {
+        x: -originalWidth,
+        duration: duration,
+        ease: 'none',
+        repeat: -1,
+        repeatDelay: 7
+      });
+
+      // pause on hover
+      skillsWindow.addEventListener('mouseenter', () => { if (skillsTween) skillsTween.pause(); });
+      skillsWindow.addEventListener('mouseleave', () => { if (skillsTween) skillsTween.resume(); });
+    }
+  }
+
+  // initialize after load
+  window.addEventListener('load', initSkillsLoop);
+
+  // re-init on resize (debounced)
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      initSkillsLoop();
+    }, 250);
+  });
+
+  // ========================================
   // Projects Filter
   // ========================================
   const filterButtons = document.querySelectorAll('.filter-btn');
